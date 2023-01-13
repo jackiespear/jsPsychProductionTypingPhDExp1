@@ -397,7 +397,17 @@ var test_phase = {
             choices: ['y', 'n'],
             data: jsPsych.timelineVariable("data"), phase: "test",
             response_ends_trial:true,
-            post_trial_gap: 500 // like a blank 500
+            post_trial_gap: 500, // like a blank 500
+            on_finish: function(data) {
+              if (data.response == "y" && data.type == "old") {
+                data.correct = 1;
+              } else if (data.response == "n" && data.type == "new") {
+                data.correct = 1;
+              }
+              else {
+                data.correct = 0;
+              }
+            }
         }
     ],
     randomize_order: true,
@@ -467,14 +477,14 @@ timeline.push(practice_test_instructions);
 timeline.push(study_procedure); // this is new
 timeline.push(test_instructions);
 timeline.push(test_phase);
-timeline.push(exit_full_screen);
-timeline.push(debrief);
+//timeline.push(exit_full_screen);
+//timeline.push(debrief);
 
 /*start experiment*/
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
-     window.location.href = "https://umanitobapsych.sona-systems.com/webstudy_credit.aspx?experiment_id=1303&credit_token=a035fd3a62b541dcae118ab791f90307&survey_code="+SONA_ID; //changed
+     //window.location.href = "https://umanitobapsych.sona-systems.com/webstudy_credit.aspx?experiment_id=1303&credit_token=a035fd3a62b541dcae118ab791f90307&survey_code="+SONA_ID; //changed
       // display data at end:
       jsPsych.data.displayData(); //commented out for final version
     }
