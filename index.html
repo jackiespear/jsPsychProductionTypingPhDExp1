@@ -106,6 +106,29 @@
 
 <script>
 
+/////////////////////////////////////////////////////////////
+//Randomly Assign one of the three between-subjects conditions: mixed-list, pure-produce, or pure-read
+var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['pure_read', 'pure_produce', 'mixed'], 1)[0];
+jsPsych.data.addProperties({
+  condition: condition_assignment
+});
+
+//trial information for each condition
+var list_1 = [{stimulus: 'List 1, trial 1'}];
+var list_2 = [{stimulus: 'List 2, trial 1'}];
+var list_3 = [{stimulus: 'List 3, trial 1'}];
+
+// create a variable to hold the trial information, which changes based on condition
+var stimuli;
+if (condition_assignment == "pure_read") {
+  stimuli = list_1;
+} else if (condition_assignment == "pure_produce") {
+  stimuli = list_2;
+} else if (condition_assignment == "mixed") {
+  stimuli = list_3;
+}
+
+
 
 /////////////////////////////////////////////////////////////
 //Assign Random instructions function (read or produce)
