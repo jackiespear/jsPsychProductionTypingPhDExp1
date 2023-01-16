@@ -8,6 +8,11 @@ testwords = [
 {"stimulus":"<p style='font-size: 48px;'>DISH</p>","data":{"type":"old","category":"produce","word":"DISH"}},
 {"stimulus":"<p style='font-size: 48px;'>LEAFLET</p>","data":{"type":"old","category":"produce","word":"LEAFLET"}},
 
+{"stimulus":"<p style='font-size: 48px;'>OSCAR</p>","data":{"type":"new","category":"new","word":"OSCAR"}},
+{"stimulus":"<p style='font-size: 48px;'>JACKIE</p>","data":{"type":"new","category":"new","word":"JACKIE"}},
+{"stimulus":"<p style='font-size: 48px;'>BIRTHDAY</p>","data":{"type":"new","category":"new","word":"BIRTHDAY"}},
+{"stimulus":"<p style='font-size: 48px;'>DOG</p>","data":{"type":"new","category":"new","word":"DOG"}},
+
 /*{"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>FLAUNT</p>","data":{"type":"old","category":"abstract","word":"FLAUNT"}},
 {"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>THRIFT</p>","data":{"type":"old","category":"abstract","word":"THRIFT"}},
 {"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>CHEAT</p>","data":{"type":"old","category":"abstract","word":"CHEAT"}},
