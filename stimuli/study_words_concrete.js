@@ -1,8 +1,8 @@
 studywords_concrete = [
-{"stimulus":"<p style='font-size: 48px;'>RADISH - <span style='color: green'>PEAR</span></p>","data":{"type":"old","category":"produce","word":"RADISH - PEAR"}},
-{"stimulus":"<p style='font-size: 48px;'>CHAPLAIN - <span style='color: green'>MINISTER</span></p>","data":{"type":"old","category":"produce","word":"CHAPLAIN - MINISTER"}},
-{"stimulus":"<p style='font-size: 48px;'>ENTREE - <span style='color: green'>DISH</span></p>","data":{"type":"old","category":"produce","word":"ENTREE - DISH"}},
-{"stimulus":"<p style='font-size: 48px;'>PAMPHLET - <span style='color: green'>LEAFLET</span></p>","data":{"type":"old","category":"produce","word":"PAMPHLET - LEAFLET"}},
+{"stimulus":"<p style='font-size: 48px;'>RADISH - <span style='color: green'>PEAR1</span></p>","data":{"type":"old","category":"produce","word":"RADISH - PEAR"}},
+{"stimulus":"<p style='font-size: 48px;'>CHAPLAIN - <span style='color: green'>MINISTER2</span></p>","data":{"type":"old","category":"produce","word":"CHAPLAIN - MINISTER"}},
+{"stimulus":"<p style='font-size: 48px;'>ENTREE - <span style='color: green'>DISH3</span></p>","data":{"type":"old","category":"produce","word":"ENTREE - DISH"}},
+{"stimulus":"<p style='font-size: 48px;'>PAMPHLET - <span style='color: green'>LEAFLET4</span></p>","data":{"type":"old","category":"produce","word":"PAMPHLET - LEAFLET"}},
 /*{"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>FLEECE</p>","data":{"type":"old","category":"concrete","word":"FLEECE"}},
 {"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>LOCUST</p>","data":{"type":"old","category":"concrete","word":"LOCUST"}},
 {"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>APPLIANCE</p>","data":{"type":"old","category":"concrete","word":"APPLIANCE"}},

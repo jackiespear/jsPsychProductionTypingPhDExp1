@@ -1,8 +1,8 @@
 studywords_abstract = [
-{"stimulus":"<p style='font-size: 48px;'>ALLURE - <span style='color: red'>DRAW</span></p>","data":{"type":"old","category":"read","word":"ALLURE - DRAW"}},
-{"stimulus":"<p style='font-size: 48px;'>ESTEEM - <span style='color: red'>CONFIDENCE</span></p>","data":{"type":"old","category":"read","word":"ESTEEM - CONFIDENCE"}},
-{"stimulus":"<p style='font-size: 48px;'>EARNEST - <span style='color: red'>HONEST</span></p>","data":{"type":"old","category":"read","word":"EARNEST - HONEST"}},
-{"stimulus":"<p style='font-size: 48px;'>HARMONY - <span style='color: red'>TUNE</span></p>","data":{"type":"old","category":"read","word":"HARMONY - TUNE"}},
+{"stimulus":"<p style='font-size: 48px;'>ALLURE - <span style='color: red'>DRAW1</span></p>","data":{"type":"old","category":"read","word":"ALLURE - DRAW"}},
+{"stimulus":"<p style='font-size: 48px;'>ESTEEM - <span style='color: red'>CONFIDENCE2</span></p>","data":{"type":"old","category":"read","word":"ESTEEM - CONFIDENCE"}},
+{"stimulus":"<p style='font-size: 48px;'>EARNEST - <span style='color: red'>HONEST3</span></p>","data":{"type":"old","category":"read","word":"EARNEST - HONEST"}},
+{"stimulus":"<p style='font-size: 48px;'>HARMONY - <span style='color: red'>TUNE4</span></p>","data":{"type":"old","category":"read","word":"HARMONY - TUNE"}},
 
 /*{"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>FLAUNT</p>","data":{"type":"old","category":"abstract","word":"FLAUNT"}},
 {"stimulus":"<p style='font-size: 48px;'>{"stimulus":"<p style='font-size: 48px;'>THRIFT</p>","data":{"type":"old","category":"abstract","word":"THRIFT"}},

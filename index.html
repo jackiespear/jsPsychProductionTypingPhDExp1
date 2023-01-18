@@ -16,8 +16,10 @@
         <script src='stimuli/study_words_inconsist_practice.js'></script>
         <script src='stimuli/study_words_concrete.js'></script>
         <script src='stimuli/study_words_abstract.js'></script>
-        <script src='stimuli/study_words_produce2.js'></script>
+        <script src='stimuli/study_words_produce2.js'></script> 
         <script src='stimuli/study_words_read2.js'></script>
+        <script src='stimuli/study_words_mixed1.js'></script>
+        <script src='stimuli/study_words_mixed2.js'></script>
         <script src='stimuli/study_words_pure_produce.js'></script>
         <script src='stimuli/study_words_pure_read.js'></script>
 
@@ -115,24 +117,22 @@
 <script>
 
 /////////////////////////////////////////////////////////////
-//Randomly Assign one of the three between-subjects conditions: mixed-list, pure-produce, or pure-read
+//Randomly Assign one of the three between-subjects conditions: mixed-list, pure-produce, or pure-read (with two counterbalanced mixed-lists)
 //https://github.com/jspsych/jsPsych/discussions/1899
 var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['pure_read', 'pure_produce', 'mixed1', 'mixed2'], 1)[0];
 jsPsych.data.addProperties({
   condition: condition_assignment
 });
 
-//trial information for each condition
-var list_1 = [{stimulus: 'List 1, trial 1'}]; //this can be omitted I think, this information is in the list files -- change
-// replace with:
-//var list_1 = studywords_produce1
-var list_2 = [{stimulus: 'List 2, trial 1'}];
-var list_3 = [{stimulus: 'List 3, trial 1'}];
-var list_4 = [{stimulus: 'List 4, trial 1'}];
+//trial information for each condition -  will call a different list depending on condition
+var list_1 = studywords_abstract;
+var list_2 = studywords_concrete;
+var list_3 = studywords_mixed1;
+var list_4 = studywords_mixed2;
 
 // create a variable to hold the trial information, which changes based on condition
 var stimuli;
-if (condition_assignment == "pure_read") {
+if (condition_assignment == "pure_read") { //if pure_read is sampled from above randomization routine, the stimuli presented will be..
   stimuli = list_1;
 } else if (condition_assignment == "pure_produce") {
   stimuli = list_2;
@@ -147,38 +147,38 @@ if (condition_assignment == "pure_read") {
 /////////////////////////////////////////////////////////////
 //Assign Random instructions function (read or produce)
 //Custom Function for this experiment 
-function randomize_instructions(list){
-  R_instructions=[]; // create an empty list/array
-  for(i=0; i<list.length; i++){ //iterate for every element in the list
-    if(i<(list.length/2)){ //if it's in the first half of the list
-      R_instructions.push("<p style='font-size: 28px; color: green;'>TYPE</p>"); // put the word produce in. .push adds new items onto the end of any array
-    } else{ //otherwise
-      R_instructions.push("<p style='font-size: 28px; color: red;'>READ</p>"); //put the word read
-    }
-  }
-  R_instructions=jsPsych.randomization.repeat(R_instructions,1); //this will then randomize that list
-  for(i=0; i<list.length; i++){ //for every trail, i+1
-    list[i].instructions = R_instructions[i]
-  }
-  return(list);
-}
+// function randomize_instructions(list){
+//   R_instructions=[]; // create an empty list/array
+//   for(i=0; i<list.length; i++){ //iterate for every element in the list
+//     if(i<(list.length/2)){ //if it's in the first half of the list
+//       R_instructions.push("<p style='font-size: 28px; color: green;'>TYPE</p>"); // put the word produce in. .push adds new items onto the end of any array
+//     } else{ //otherwise
+//       R_instructions.push("<p style='font-size: 28px; color: red;'>READ</p>"); //put the word read
+//     }
+//   }
+//   R_instructions=jsPsych.randomization.repeat(R_instructions,1); //this will then randomize that list
+//   for(i=0; i<list.length; i++){ //for every trail, i+1
+//     list[i].instructions = R_instructions[i]
+//   }
+//   return(list);
+// }
 
 
 //console.log(studywords);
-studywords_concrete=randomize_instructions(studywords_concrete); //using the above function to randomize consistent words // for generation need to make different conditions
-studywords_abstract=randomize_instructions(studywords_abstract); //using the above function to randomize inconsistent words
-console.log(studywords_concrete);
-console.log(studywords_abstract);
+// studywords_concrete=randomize_instructions(studywords_concrete); //using the above function to randomize consistent words // for generation need to make different conditions
+// studywords_abstract=randomize_instructions(studywords_abstract); //using the above function to randomize inconsistent words
+// console.log(studywords_concrete);
+// console.log(studywords_abstract);
 
-studywords = studywords_concrete.concat(studywords_abstract); //adding the two arrays together
-studywords = jsPsych.randomization.repeat(studywords, 1)
-console.log(studywords); 
+// studywords = studywords_concrete.concat(studywords_abstract); //adding the two arrays together
+// studywords = jsPsych.randomization.repeat(studywords, 1)
+// console.log(studywords); 
 /////////////////////////////
-studywords_consist_practice=randomize_instructions(studywords_consist_practice); //randomzing words for practice trial
-studywords_inconsist_practice=randomize_instructions(studywords_inconsist_practice);
+// studywords_consist_practice=randomize_instructions(studywords_consist_practice); //randomzing words for practice trial
+// studywords_inconsist_practice=randomize_instructions(studywords_inconsist_practice);
 
-studywords_practice = studywords_consist_practice.concat(studywords_inconsist_practice);
-studywords_practice = jsPsych.randomization.repeat(studywords_practice, 1)
+// studywords_practice = studywords_consist_practice.concat(studywords_inconsist_practice);
+// studywords_practice = jsPsych.randomization.repeat(studywords_practice, 1)
 
 
 
@@ -289,17 +289,17 @@ var instructions = {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Present the PRACTICE study words
-var study_phase = {
-            type: 'html-keyboard-response',
-            stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
-            //data: jsPsych.timelineVariable("data"),
-            trial_duration: 2000, // words will appear for 2 seconds
-            post_trial_gap: 500, // like a blank 500
-            data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
-            //timeline_variables: studywords,
-           // randomize_order: true,
-};
+// var study_phase = {
+//             type: 'html-keyboard-response',
+//             stimulus: jsPsych.timelineVariable('stimulus'),
+//             choices: jsPsych.NO_KEYS,
+//             //data: jsPsych.timelineVariable("data"),
+//             trial_duration: 2000, // words will appear for 2 seconds
+//             post_trial_gap: 500, // like a blank 500
+//             data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
+//             //timeline_variables: studywords,
+//             //randomize_order: true,
+// };
 
 //Present the instruction to produce or read during PRACTICE phase
 var study_instructions123 = {
@@ -308,7 +308,7 @@ var study_instructions123 = {
     preamble: function(){
         var html = `
           <p>${jsPsych.timelineVariable('stimulus')}</p>  
-          <p>${jsPsych.timelineVariable('instructions')}</p>`
+          `
         return html;
     },
     html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
@@ -323,7 +323,8 @@ var study_instructions123 = {
 //Putting the study words and study instruction together for the PRACTICE phase
  var study_procedure_practice = {
    timeline: [study_instructions123],
-   timeline_variables: studywords_practice
+   timeline_variables: studywords_practice,
+   randomize_order: true,
  };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -343,17 +344,17 @@ var practice_test_instructions = {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Present the study words
-var study_phase = {
-            type: 'html-keyboard-response',
-            stimulus: jsPsych.timelineVariable('stimulus'),
-            choices: jsPsych.NO_KEYS,
-            //data: jsPsych.timelineVariable("data"),
-            trial_duration: 2000, // words will appear for 2 seconds
-            post_trial_gap: 500, // like a blank 500
-            data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
-            //timeline_variables: studywords,
-           // randomize_order: true,
-};
+// var study_phase = {
+//             type: 'html-keyboard-response',
+//             stimulus: jsPsych.timelineVariable('stimulus'),
+//             choices: jsPsych.NO_KEYS,
+//             //data: jsPsych.timelineVariable("data"),
+//             trial_duration: 2000, // words will appear for 2 seconds
+//             post_trial_gap: 500, // like a blank 500
+//             data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
+//             //timeline_variables: studywords,
+//            // randomize_order: true,
+// };
 
 
 
@@ -364,13 +365,13 @@ var study_instructions123 = {
     preamble: function(){
         var html = `
           <p>${jsPsych.timelineVariable('stimulus')}</p>
-          <p>${jsPsych.timelineVariable('instructions')}</p>`
+          `
         return html;
     },
     html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
     post_trial_gap: 500, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
     trial_duration: 3000,
-    data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
+    data: {phase:"study", type: jsPsych.timelineVariable('data')},
     autofocus: 'test-resp-box',
     //timeline_variables: study_instructions,
     //randomize_order:true,
@@ -379,7 +380,8 @@ var study_instructions123 = {
 //Putting the study words and study instruction together
  var study_procedure = {
    timeline: [study_instructions123],
-   timeline_variables: studywords
+   timeline_variables: stimuli, // change from studywords to stimuli, so that the randomization procedure is used to randomize condition
+   randomize_order: true,
  };
 
 
