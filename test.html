@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Recognition Experiment</title>
+        <meta name="author" content="Jackie Spear"/>
+        <meta name="description" content="A psychology recognition memory experiment"/>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <script src="jspsych-6.3.1/jspsych.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-external-html.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-html-form.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script> <!-- loading in math.js to use a matrix for randomization -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/BrowserFS/2.0.0/browserfs.js></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js></script>
+        <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.min.js></script>
+        <script src='stimuli/exp_text.js'></script>
+        <script src='stimuli/study_words_consist_practice.js'></script>
+        <script src='stimuli/study_words_inconsist_practice.js'></script>
+        <script src='stimuli/study_words_concrete.js'></script>
+        <script src='stimuli/study_words_abstract.js'></script>
+        <script src='stimuli/study_words_produce2.js'></script> 
+        <script src='stimuli/study_words_read2.js'></script>
+        <script src='stimuli/study_words_mixed1.js'></script>
+        <script src='stimuli/study_words_mixed2.js'></script>
+        <script src='stimuli/study_words_pure_produce.js'></script>
+        <script src='stimuli/study_words_pure_read.js'></script>
+
+        <script src='stimuli/test_words.js'></script>
+        <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    </head>
+ 
+<script>
+
+function csvToArr(stringVal, splitter) {
+  const [keys, ...rest] = stringVal
+    .trim()
+    .split("\n")
+    .map((item) => item.split(splitter));
+
+  const formedArr = rest.map((item) => {
+    const object = {};
+    keys.forEach((key, index) => (object[key] = item.at(index)));
+    return object;
+  });
+  return formedArr;
+}
+var words = [];
+var words = csvToArr("words.csv");
+console.log(words);
+
+
+
+</script>
+
+
+
+<!-- Allow remote storage on Google Firebase -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-database.js"></script>
+
+<!-- enter some javascript code-->
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+  </script>
+  </html>
