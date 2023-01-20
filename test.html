@@ -27,6 +27,7 @@
         <script src='stimuli/study_words_mixed2.js'></script>
         <script src='stimuli/study_words_pure_produce.js'></script>
         <script src='stimuli/study_words_pure_read.js'></script>
+        <script src='words.js'></script>
 
         <script src='stimuli/test_words.js'></script>
         <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css"></link>
@@ -34,22 +35,10 @@
  
 <script>
 
-function csvToArr(stringVal, splitter) {
-  const [keys, ...rest] = stringVal
-    .trim()
-    .split("\n")
-    .map((item) => item.split(splitter));
+console.table(words);
 
-  const formedArr = rest.map((item) => {
-    const object = {};
-    keys.forEach((key, index) => (object[key] = item.at(index)));
-    return object;
-  });
-  return formedArr;
-}
-var words = [];
-var words = csvToArr("words.csv");
-console.log(words);
+var words1 = jsPsych.randomization.repeat(words, 1);
+console.table(words1);
 
 
 
