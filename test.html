@@ -40,9 +40,6 @@ console.table(words);
 var words1 = jsPsych.randomization.repeat(words, 1); //this will shuffle all the rows
 console.table(words1);
 
-//var words2 = jsPsych.randomization.repeat(words1[i], 1);
-//console.table(words2);
-
 function shuffle_variable (studywords_list) {
   for(i=0; i<studywords_list.length; i ++) {
     W1 = studywords_list[i].word1;
@@ -57,7 +54,58 @@ function shuffle_variable (studywords_list) {
   }
   return(studywords_list)
 }
-studywords=shuffle_variable(words);
+studywords = [];
+studywords = shuffle_variable(words); //this will shuffle the columns
+console.log(studywords);
+
+studywords=jsPsych.randomization.repeat(studywords, 1); //this will shuffle the rows
+console.log(studywords);
+console.table(studywords);
+
+
+console.log(studywords);
+studywords2 = [];
+studywords2 = studywords; 
+console.table(studywords2);
+
+var study_pairs = studywords.map(function(element) { //selecting the first two words to create the word pairs
+  return [element.word1, element.word2];
+})
+
+study_pairs = {...study_pairs, stimuli: 'word1'};
+console.table(study_pairs);
+
+console.log(study_pairs);
+console.table(study_pairs);
+
+
+
+
+let text = "";
+for (let i = 0; 1 < study_pairs[0]; i++) {
+  text += study_pairs[i] + "</span>";
+ 
+}
+
+console.log(text);
+console.table(text);
+
+
+var study_pairs = studywords.map(function(element) {
+  return [element.word1, element.word2].join(" - ");
+})
+
+console.log(study_pairs);
+console.table(study_pairs);
+
+
+
+//studywords[2].pop();
+//console.tabe(studywords);
+
+
+//console.log(studywords);
+
 
 
 </script>
