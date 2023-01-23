@@ -37,9 +37,27 @@
 
 console.table(words);
 
-var words1 = jsPsych.randomization.repeat(words, 1);
+var words1 = jsPsych.randomization.repeat(words, 1); //this will shuffle all the rows
 console.table(words1);
 
+//var words2 = jsPsych.randomization.repeat(words1[i], 1);
+//console.table(words2);
+
+function shuffle_variable (studywords_list) {
+  for(i=0; i<studywords_list.length; i ++) {
+    W1 = studywords_list[i].word1;
+    W2 = studywords_list[i].word2;
+    W3 = studywords_list[i].word3;
+    WL = [W1, W2, W3];
+    My_ord = jsPsych.randomization.repeat([0,1,2],1);
+
+    studywords_list[i].word1 = WL[My_ord[0]];
+    studywords_list[i].word2 = WL[My_ord[1]];
+    studywords_list[i].word3 = WL[My_ord[2]];
+  }
+  return(studywords_list)
+}
+studywords=shuffle_variable(words);
 
 
 </script>
