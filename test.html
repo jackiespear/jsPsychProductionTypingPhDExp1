@@ -72,14 +72,35 @@ var study_pairs = studywords.map(function(element) { //selecting the first two w
   return [element.word1, element.word2];
 })
 
-study_pairs = {...study_pairs, stimuli: 'word1'};
-console.table(study_pairs);
+//study_pairs = {...study_pairs, stimuli: 'word1'};
+//console.table(study_pairs);
 
 console.log(study_pairs);
 console.table(study_pairs);
 
+let output = [];
+let tmp;
+let tmp2;
 
+//for(let i = 0; i < study_pairs.length; i++){
+//  tmp = {"word1" : study_pairs[i][0]};
+//  output.push(tmp);
+//}
 
+//console.log(output);
+//console.table(output);
+
+for(let i=0; i < study_pairs.length; i++) {
+    for (let j=0; j < study_pairs[i].length; j++){ // need to change this I think
+        tmp2 = {"word1" : study_pairs[j][0]}; 
+        output.push(tmp2);
+    }
+    tmp = {"word2" : study_pairs[i][1]};
+    output.push(tmp);
+}
+
+console.log(output);
+console.table(output);
 
 let text = "";
 for (let i = 0; 1 < study_pairs[0]; i++) {
