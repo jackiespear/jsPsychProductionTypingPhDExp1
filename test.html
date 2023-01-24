@@ -68,6 +68,13 @@ studywords2 = [];
 studywords2 = studywords; 
 console.table(studywords2);
 
+const result = studywords2.map(({word1, word2})=>{
+  let doc={word1, word2};
+  return doc;
+}); 
+
+console.table(result); //This works!!!
+
 var study_pairs = studywords.map(function(element) { //selecting the first two words to create the word pairs
   return [element.word1, element.word2];
 })
@@ -78,29 +85,53 @@ var study_pairs = studywords.map(function(element) { //selecting the first two w
 console.log(study_pairs);
 console.table(study_pairs);
 
+var new_study_pairs = Array.from(study_pairs, val => "word1:" + val);
+console.table(new_study_pairs);
+
+
+
 let output = [];
 let tmp;
 let tmp2;
 
-//for(let i = 0; i < study_pairs.length; i++){
-//  tmp = {"word1" : study_pairs[i][0]};
-//  output.push(tmp);
-//}
+for(let i = 0; i < study_pairs.length; i++){
+  tmp = {"word1" : study_pairs[i][0]};
+  output.push(tmp);
+  for(let j = 0; j < study_pairs[i].length; j++){
+    tmp2 = {"word2": study_pairs[j][1]};
+    output.push(tmp2)
+  }
+}
 
-//console.log(output);
-//console.table(output);
+console.log(output);
+console.table(output);
 
-for(let i=0; i < study_pairs.length; i++) {
-    for (let j=0; j < study_pairs[i].length; j++){ // need to change this I think
-        tmp2 = {"word1" : study_pairs[j][0]}; 
+for(let i=0; i < study_pairs.length; i++) { //for each element in the main array e.g. each word pair
+    for (let j=0; j < study_pairs[i].length; j++){ // for each element in the innner array e.g. each individual word
+        //statement for inner loop
+        tmp2 = {"word1" : study_pairs[j][0]};
         output.push(tmp2);
+       // output[i][j] = output.push(tmp, tmp2);
     }
-    tmp = {"word2" : study_pairs[i][1]};
+    //statement for outerloop
+    tmp = {"word2" : study_pairs[i][0]}; //misses 3rd word in word 2 (column 2) and triples 2nd word in 1st and 2nd word pair
     output.push(tmp);
 }
 
 console.log(output);
 console.table(output);
+
+for(let i=0; i < study_pairs.length; i++) { //for each element in the main array e.g. each word pair
+    for (let j=0; j < study_pairs[i].length; j++){ // for each element in the innner array e.g. each individual word
+
+      console.table(study_pairs[i][j]);
+    }
+
+} 
+
+console.log(output);
+console.table(output); 
+
 
 let text = "";
 for (let i = 0; 1 < study_pairs[0]; i++) {
