@@ -59,23 +59,60 @@ studywords = shuffle_variable(words); //this will shuffle the columns
 console.log(studywords);
 
 studywords=jsPsych.randomization.repeat(studywords, 1); //this will shuffle the rows
-console.log(studywords);
+console.log(studywords[1]);
+console.log(studywords[1].word1);
 console.table(studywords);
 
 
-console.log(studywords);
+//console.log(studywords);
 studywords2 = [];
 studywords2 = studywords; 
-console.table(studywords2);
+//console.table(studywords2);
 
-const result = studywords2.map(({word1, word2})=>{
+const result = studywords2.map(({word1, word2})=>{ //subsetting the array to be only two words for construction of word pairs
   let doc={word1, word2};
   return doc;
 }); 
 
 console.table(result); //This works!!!
 
-var study_pairs = studywords.map(function(element) { //selecting the first two words to create the word pairs
+//creating text variables to concatenate onto each word
+var text_produce1 = "<span style='color: green'>";
+var text_read1 = "<span style='color: red'>";
+var text_produce2 = '</span></p>","data":{"type":"old","category":"produce"}';
+var text_read2 = '</span></p>","data":{"type":"old","category":"read"}';
+
+
+for (var i = 0; i < result.length; i++) {
+  result[i].word2 = text_produce1 + result[i].word2 + text_produce2;
+}
+
+console.log(result);
+console.table(result);
+
+
+var newWords = result.slice(0, result.length - 1); // this will get rid of the last word pair
+console.table(newWords);
+
+let newWords2 = result.slice(1); //This creates a new array that contains all elements of the words array starting from the second element
+console.table(newWords2);
+
+
+
+
+
+//result[1].unshift('{"stimulus":'); // need to put this into a loop
+//[result[1].word1].unshift('{"stimulus"');
+//console.log(result);
+
+
+
+
+
+
+
+
+/* var study_pairs = studywords.map(function(element) { //selecting the first two words to create the word pairs
   return [element.word1, element.word2];
 })
 
@@ -148,7 +185,7 @@ var study_pairs = studywords.map(function(element) {
 })
 
 console.log(study_pairs);
-console.table(study_pairs);
+console.table(study_pairs); */
 
 
 
