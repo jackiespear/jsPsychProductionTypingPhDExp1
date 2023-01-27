@@ -34,11 +34,10 @@
     </head>
  
 <script>
-
-console.table(words);
-
-var words1 = jsPsych.randomization.repeat(words, 1); //this will shuffle all the rows
-console.table(words1);
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////         Word Randomization and study/test list construction                //////////// 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+console.table(words); //printing the words as they're read in
 
 function shuffle_variable (studywords_list) {
   for(i=0; i<studywords_list.length; i ++) {
@@ -57,66 +56,417 @@ function shuffle_variable (studywords_list) {
 studywords = [];
 studywords = shuffle_variable(words); //this will shuffle the columns
 console.log(studywords);
-
-studywords=jsPsych.randomization.repeat(studywords, 1); //this will shuffle the rows
-console.log(studywords);
 console.table(studywords);
 
+studywords=jsPsych.randomization.repeat(studywords, 1); //this will shuffle the rows
+//console.log(studywords[1]);
+//console.log(studywords[1].word1);
+console.table(studywords); 
 
-console.log(studywords);
 studywords2 = [];
 studywords2 = studywords; 
-console.table(studywords2);
 
-var study_pairs = studywords.map(function(element) { //selecting the first two words to create the word pairs
-  return [element.word1, element.word2];
-})
+//subsetting the array to be only two words for construction of word pairs
+const result = studywords2.map(({word1, word2})=>{ 
+  let doc={word1, word2};
+  return doc;
+}); 
 
-study_pairs2 = [];
-study_pairs = { ...study_pairs, word1: study_pairs[0][0], word2: study_pairs[0][1] }; //well kind of.. puts words on the bottom
-study_pairs2 = { ...study_pairs, ...study_pairs};
+console.table(result); //This works!!!
 
-console.table(study_pairs2);
+//subsetting the words into 3 arrays for produce words, read words, and new words
+var produce_words = result.slice(0, 20); //produce words
+console.table(produce_words);
 
-//var study_pairs = Object.keys(study_pairs.map((key) => ))
-console.table(study_pairs);
+var read_words = result.slice(20, 40); //read words
+console.table(read_words);
 
-console.log(study_pairs);
-console.table(study_pairs);
+var new_words = result.slice(40, 80); //new lures for test
+console.table(new_words);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//creating text variables to concatenate onto each word for the test phase
+var text_test_all = '{"stimulus":"<p style="font-size: 48px;">"}';
+var text_test_produce = '{"data":{"type":"old","category":"produce","condition":"mixed"}}';
+var text_test_read = '{"data":{"type":"old","category":"read","condition":"mixed"}}';
+var text_test_new = '{"data":{"type":"new","category":"new","condition":"mixed"}}';  
+
+//var test123 =  text_test_new.data.type + "word" ;
+//console.log(test123);
+
+var produce_words_test = produce_words.map(({word2})=>{ //subsetting produced words to be only 1 word for the test words
+  let doc={word2};
+  return doc;
+});
+console.table(produce_words_test);
+
+var read_words_test = read_words.map(({word2})=>{ //subsetting read words to be only 1 word for the test words
+  let doc={word2};
+  return doc;
+});
+console.table(read_words_test);
+
+var new_words_test = new_words.map(({word2})=>{ //subsetting new words to be only 1 word for the test words
+  let doc={word2};
+  return doc;
+});
+console.table(new_words_test);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//adding formatting to the produce words at test
+for (var i = 0; i < produce_words_test.length; i++) {
+  produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2 + text_test_produce;
+};
+console.table(produce_words_test);
+
+//adding formatting to the read words at test
+for (var i = 0; i < read_words_test.length; i++) {
+  read_words_test[i].word2 = text_test_all + read_words_test[i].word2 + text_test_read;
+};
+console.table(read_words_test);
+
+//adding formatting to the new words at test
+for (var i = 0; i < new_words_test.length; i++) {
+  new_words_test[i].word2 = text_test_all + new_words_test[i].word2 + text_test_new;
+};
+console.table(new_words_test);
+
+//make the list of test words to present during the test phase
+var test_words_mixed = produce_words_test.concat(read_words_test, new_words_test);
+console.table(test_words_mixed);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//creating text variables to concatenate onto each word for the study phase
+var text_produce1 = "<span style='color: green'>";
+var text_read1 = "<span style='color: red'>";
+var text_produce2 = '</span></p>","data":{"type":"old","category":"produce","condition":"mixed"}';
+var text_read2 = '</span></p>","data":{"type":"old","category":"read","condition":"mixed"}';
+
+//adding formatting to the produce words
+for (var i = 0; i < produce_words.length; i++) {
+  produce_words[i].word2 = text_produce1 + produce_words[i].word2 + text_produce2;
+};
+console.table(produce_words);
+
+//adding text to the read words
+for (var i = 0; i < read_words.length; i++) {
+  read_words[i].word2 = text_read1 + read_words[i].word2 + text_read2;
+};
+console.table(read_words);
+
+//Make the list or study words to present during the study phase
+var study_words_mixed = produce_words.concat(read_words);
+console.table(study_words_mixed);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////        Make study/test lists for the pure produce list         ////////////////////// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//formatting the test words for the pure produce condition. all is the same execept for condition and no read words
+
+var test_words_pureproduce = test_words_mixed;
+// changing the condition in the test words to be pureproduce 
+for (let i = 0; i < test_words_pureproduce.length; i++) {
+    test_words_pureproduce[i] = JSON.stringify(test_words_pureproduce[i]).replace(/mixed/g, 'pureproduce');
+    test_words_pureproduce[i] = JSON.parse(test_words_pureproduce[i]);
+};
+
+//replacing all instances of 'read' to produce
+for (let i = 0; i < test_words_pureproduce.length; i++) {
+    test_words_pureproduce[i] = JSON.stringify(test_words_pureproduce[i]).replace(/read/g, 'produce');
+    test_words_pureproduce[i] = JSON.parse(test_words_pureproduce[i]);
+};
+
+//formatting the study words
+var study_words_pureproduce = study_words_mixed;
+// changing the condition in the test words to be pureproduce 
+for (let i = 0; i < study_words_pureproduce.length; i++) {
+    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/mixed/g, 'pureproduce');
+    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
+};
+
+// changing the red to green in the test words to be pureproduce 
+for (let i = 0; i < study_words_pureproduce.length; i++) {
+    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/red/g, 'green');
+    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
+};
+
+// changing the category to be all produce (no read) 
+for (let i = 0; i < study_words_pureproduce.length; i++) {
+    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/read/g, 'produce');
+    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
+};
+//console.table(study_words_pureproduce);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////        Make study/test lists for the pure read list            ////////////////////// 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//formatting the test words for the pure read condition. all is the same execept for condition and no produce words
+var test_words_pureread = test_words_mixed;
+// changing the condition in the test words to be pureread 
+for (let i = 0; i < test_words_pureread.length; i++) {
+    test_words_pureread[i] = JSON.stringify(test_words_pureread[i]).replace(/mixed/g, 'pureread');
+    test_words_pureread[i] = JSON.parse(test_words_pureread[i]);
+};
+
+//replacing all instances of 'produce' to read
+for (let i = 0; i < test_words_pureread.length; i++) {
+    test_words_pureread[i] = JSON.stringify(test_words_pureread[i]).replace(/produce/g, 'read');
+    test_words_pureread[i] = JSON.parse(test_words_pureread[i]);
+};
+
+//formatting the study words /////////////////////
+var study_words_pureread = study_words_mixed;
+// changing the condition in the study words to be pureread 
+for (let i = 0; i < study_words_pureread.length; i++) {
+    study_words_pureread[i] = JSON.stringify(study_words_pureread[i]).replace(/mixed/g, 'pureread');
+    study_words_pureread[i] = JSON.parse(study_words_pureread[i]);
+};
+
+// changing the green to red in the study words to be pureread 
+for (let i = 0; i < study_words_pureread.length; i++) {
+    study_words_pureread[i] = JSON.stringify(study_words_pureread[i]).replace(/green/g, 'red');
+    study_words_pureread[i] = JSON.parse(study_words_pureread[i]);
+};
+// changing the category to be all read (no produce) 
+for (let i = 0; i < study_words_pureproduce.length; i++) {
+    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/produce/g, 'read');
+    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
+};
+//console.table(study_words_pureread);
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Randomly Assign one of the three between-subjects conditions: mixed-list, pure-produce, or pure-read  //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/* var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['pure_read', 'pure_produce', 'mixed'], 1)[0];
+jsPsych.data.addProperties({
+  condition: condition_assignment
+});
+
+//trial information for each condition -  will call a different list depending on condition
+var list_1 = study_words_pureproduce;
+var list_2 = study_words_pureread;
+var list_3 = study_words_mixed;
+
+// create a variable to hold the trial information, which changes based on condition
+var stimuli;
+if (condition_assignment == "pure_read") { //if pure_read is sampled from above randomization routine, the stimuli presented will be..
+  stimuli = list_1;
+} else if (condition_assignment == "pure_produce") {
+  stimuli = list_2;
+} else if (condition_assignment == "mixed") {
+  stimuli = list_3;
+}; 
+ */
+
+/*  function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
+    let studyArray, testArray;
+    switch(condition) {
+        case 'mixed':
+            studyArray = study_words_mixed;
+            testArray = test_words_mixed;
+            break;
+        case 'pureproduce':
+            studyArray = study_words_pureproduce;
+            testArray = test_words_pureproduce;
+            break;
+        case 'pureread':
+            studyArray = study_words_pureread;
+            testArray = test_words_pureread;
+            break;
+        default:
+            throw new Error('Invalid condition')
+    }
+    // shuffle elements using Fisher-Yates algorithm
+    for (var i = studyArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = studyArray[i];
+        studyArray[i] = studyArray[j];
+        studyArray[j] = temp;
+    }
+    for (var i = testArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = testArray[i];
+        testArray[i] = testArray[j];
+        testArray[j] = temp;
+    }
+    return [studyArray, testArray];
+} */
 
 
-let text = "";
-for (let i = 0; 1 < study_pairs[0]; i++) {
-  text += study_pairs[i] + "</span>";
- 
+/* function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
+    let studyArray, testArray;
+    switch(condition) {
+        case 'mixed':
+            studyArray = study_words_mixed.slice();
+            testArray = test_words_mixed.slice();
+            break;
+        case 'pureproduce':
+            studyArray = study_words_pureproduce.slice();
+            testArray = test_words_pureproduce.slice();
+            break;
+        case 'pureread':
+            studyArray = study_words_pureread.slice();
+            testArray = test_words_pureread.slice();
+            break;
+        default:
+            throw new Error('Invalid condition')
+    }
+    // shuffle elements using Fisher-Yates algorithm
+    for (var i = studyArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = studyArray[i];
+        studyArray[i] = studyArray[j];
+        studyArray[j] = temp;
+    }
+    for (var i = testArray.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = testArray[i];
+        testArray[i] = testArray[j];
+        testArray[j] = temp;
+    }
+    return [studyArray, testArray];
 }
 
-console.log(text);
-console.table(text);
 
 
-var study_pairs = studywords.map(function(element) {
-  return [element.word1, element.word2].join(" - ");
-})
+let conditions = ['mixed', 'pureproduce', 'pureread'];
+let randomIndex = Math.floor(Math.random() * conditions.length);
+let randomCondition = conditions[randomIndex]; */
 
-console.log(study_pairs);
-console.table(study_pairs);
+/* function shuffleArray(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
+
+  function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
+  let studyArray, testArray;
+  if (condition === 'mixed') {
+    // Shuffle the arrays
+    studyArray = shuffleArray(study_words_mixed);
+    testArray = shuffleArray(test_words_mixed);
+  } else if (condition === 'pureproduce') {
+    // Shuffle the arrays
+    studyArray = shuffleArray(study_words_pureproduce);
+    testArray = shuffleArray(test_words_pureproduce);
+  } else if (condition === 'pureread') {
+    // Shuffle the arrays
+    studyArray = shuffleArray(study_words_pureread);
+    testArray = shuffleArray(test_words_pureread);
+  }
+  return [studyArray, testArray];
+}
 
 
 
-//studywords[2].pop();
-//console.tabe(studywords);
+let selectedCondition = 'pureproduce'
+let studyAndTestArrays = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, selectedCondition);
+console.log(studyArray); */
 
 
-//console.log(studywords);
 
+// Randomly select a condition
+let conditions = ['mixed', 'pureproduce', 'pureread']
+let selectedCondition = conditions[Math.floor(Math.random()*conditions.length)];
+var testArray= [];
+var studyArray= [];
+
+// Define the shuffleArray function
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Define the shuffleArraysByCondition function
+function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, selectedCondition) {
+  let studyArray, testArray;
+  if (selectedCondition === 'mixed') {
+    studyArray = shuffleArray(study_words_mixed);
+    testArray = shuffleArray(test_words_mixed);
+  } else if (selectedCondition === 'pureproduce') {
+    studyArray = shuffleArray(study_words_pureproduce);
+    testArray = shuffleArray(test_words_pureproduce);
+  } else if (selectedCondition === 'pureread') {
+    studyArray = shuffleArray(study_words_pureread);
+    testArray = shuffleArray(test_words_pureread);
+  }
+  return [studyArray, testArray];
+}
+
+// Call the function to get the study and test arrays for the selected condition
+let studyAndTestArrays = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, selectedCondition);
+console.log(studyAndTestArrays);
+
+function getRandomCondition() {
+    const conditions = ['mixed', 'pureproduce', 'pureread'];
+    const selectedCondition = conditions[Math.floor(Math.random() * conditions.length)];
+    let studyArray, testArray;
+    switch (selectedCondition) {
+        case 'mixed':
+            studyArray = study_words_mixed;
+            testArray = test_words_mixed;
+            break;
+        case 'pureproduce':
+            studyArray = study_words_pureproduce;
+            testArray = test_words_pureproduce;
+            break;
+        case 'pureread':
+            studyArray = study_words_pureread;
+            testArray = test_words_pureread;
+            break;
+    }
+    return {
+        condition: selectedCondition,
+        study: studyArray,
+        test: testArray
+    }
+}
+
+const { condition, study, test } = getRandomCondition();
+console.log(condition);
+console.log(study);
+console.log(test);
+
+
+
+
+
+
+
+
+
+
+// Now you can use the studyArray and testArray for the chosen condition
+
+
+//let [studyArray, testArray] = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, randomCondition);
+
+
+
+
+//let [studyArray, testArray] = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, 'pureproduce');
+console.table(testArray);
+console.table(studyArray)
+////////////////////////    need to make sure the right test words are being radomized at the same time!!!! ////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 </script>
-
-
 
 <!-- Allow remote storage on Google Firebase -->
 <!-- The core Firebase JS SDK is always required and must be listed first -->
