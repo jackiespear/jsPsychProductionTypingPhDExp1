@@ -72,7 +72,13 @@ var study_pairs = studywords.map(function(element) { //selecting the first two w
   return [element.word1, element.word2];
 })
 
-study_pairs = {...study_pairs, stimuli: 'word1'};
+study_pairs2 = [];
+study_pairs = { ...study_pairs, word1: study_pairs[0][0], word2: study_pairs[0][1] }; //well kind of.. puts words on the bottom
+study_pairs2 = { ...study_pairs, ...study_pairs};
+
+console.table(study_pairs2);
+
+//var study_pairs = Object.keys(study_pairs.map((key) => ))
 console.table(study_pairs);
 
 console.log(study_pairs);
