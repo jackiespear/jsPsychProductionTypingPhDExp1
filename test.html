@@ -37,7 +37,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////         Word Randomization and study/test list construction                //////////// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-console.table(words); //printing the words as they're read in
+//console.table(words); //printing the words as they're read in
 
 function shuffle_variable (studywords_list) {
   for(i=0; i<studywords_list.length; i ++) {
@@ -55,13 +55,13 @@ function shuffle_variable (studywords_list) {
 }
 studywords = [];
 studywords = shuffle_variable(words); //this will shuffle the columns
-console.log(studywords);
-console.table(studywords);
+//console.log(studywords);
+//console.table(studywords);
 
 studywords=jsPsych.randomization.repeat(studywords, 1); //this will shuffle the rows
 //console.log(studywords[1]);
 //console.log(studywords[1].word1);
-console.table(studywords); 
+//console.table(studywords); 
 
 studywords2 = [];
 studywords2 = studywords; 
@@ -72,17 +72,17 @@ const result = studywords2.map(({word1, word2})=>{
   return doc;
 }); 
 
-console.table(result); //This works!!!
+//console.table(result); //This works!!!
 
 //subsetting the words into 3 arrays for produce words, read words, and new words
 var produce_words = result.slice(0, 20); //produce words
-console.table(produce_words);
+//console.table(produce_words);
 
 var read_words = result.slice(20, 40); //read words
-console.table(read_words);
+//console.table(read_words);
 
 var new_words = result.slice(40, 80); //new lures for test
-console.table(new_words);
+//console.table(new_words);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //creating text variables to concatenate onto each word for the test phase
@@ -98,41 +98,41 @@ var produce_words_test = produce_words.map(({word2})=>{ //subsetting produced wo
   let doc={word2};
   return doc;
 });
-console.table(produce_words_test);
+//console.table(produce_words_test);
 
 var read_words_test = read_words.map(({word2})=>{ //subsetting read words to be only 1 word for the test words
   let doc={word2};
   return doc;
 });
-console.table(read_words_test);
+//console.table(read_words_test);
 
 var new_words_test = new_words.map(({word2})=>{ //subsetting new words to be only 1 word for the test words
   let doc={word2};
   return doc;
 });
-console.table(new_words_test);
+//console.table(new_words_test);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //adding formatting to the produce words at test
 for (var i = 0; i < produce_words_test.length; i++) {
   produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2 + text_test_produce;
 };
-console.table(produce_words_test);
+//console.table(produce_words_test);
 
 //adding formatting to the read words at test
 for (var i = 0; i < read_words_test.length; i++) {
   read_words_test[i].word2 = text_test_all + read_words_test[i].word2 + text_test_read;
 };
-console.table(read_words_test);
+//console.table(read_words_test);
 
 //adding formatting to the new words at test
 for (var i = 0; i < new_words_test.length; i++) {
   new_words_test[i].word2 = text_test_all + new_words_test[i].word2 + text_test_new;
 };
-console.table(new_words_test);
+//console.table(new_words_test);
 
 //make the list of test words to present during the test phase
 var test_words_mixed = produce_words_test.concat(read_words_test, new_words_test);
-console.table(test_words_mixed);
+//console.table(test_words_mixed);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //creating text variables to concatenate onto each word for the study phase
 var text_produce1 = "<span style='color: green'>";
@@ -144,55 +144,55 @@ var text_read2 = '</span></p>","data":{"type":"old","category":"read","condition
 for (var i = 0; i < produce_words.length; i++) {
   produce_words[i].word2 = text_produce1 + produce_words[i].word2 + text_produce2;
 };
-console.table(produce_words);
+//console.table(produce_words);
 
 //adding text to the read words
 for (var i = 0; i < read_words.length; i++) {
   read_words[i].word2 = text_read1 + read_words[i].word2 + text_read2;
 };
-console.table(read_words);
+//console.table(read_words);
 
 //Make the list or study words to present during the study phase
 var study_words_mixed = produce_words.concat(read_words);
-console.table(study_words_mixed);
+//console.table(study_words_mixed);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////        Make study/test lists for the pure produce list         ////////////////////// 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //formatting the test words for the pure produce condition. all is the same execept for condition and no read words
 
+var study_words_pureproduce = study_words_mixed;
+
+study_words_pureproduce = JSON.stringify(study_words_pureproduce).replace(/red/g, 'green');
+study_words_pureproduce = JSON.parse(study_words_pureproduce);
+
 var test_words_pureproduce = test_words_mixed;
+
 // changing the condition in the test words to be pureproduce 
-for (let i = 0; i < test_words_pureproduce.length; i++) {
+test_words_pureproduce = JSON.stringify(test_words_pureproduce).replace(/mixed/g, 'pureproduce');
+test_words_pureproduce = JSON.parse(test_words_pureproduce);
+
+/* for (let i = 0; i < test_words_pureproduce.length; i++) { ////didn't work, changed everything
     test_words_pureproduce[i] = JSON.stringify(test_words_pureproduce[i]).replace(/mixed/g, 'pureproduce');
     test_words_pureproduce[i] = JSON.parse(test_words_pureproduce[i]);
-};
+}; */
 
 //replacing all instances of 'read' to produce
-for (let i = 0; i < test_words_pureproduce.length; i++) {
-    test_words_pureproduce[i] = JSON.stringify(test_words_pureproduce[i]).replace(/read/g, 'produce');
-    test_words_pureproduce[i] = JSON.parse(test_words_pureproduce[i]);
-};
+test_words_pureproduce = JSON.stringify(test_words_pureproduce).replace(/read/g, 'produce');
+test_words_pureproduce = JSON.parse(test_words_pureproduce);
 
 //formatting the study words
 var study_words_pureproduce = study_words_mixed;
 // changing the condition in the test words to be pureproduce 
-for (let i = 0; i < study_words_pureproduce.length; i++) {
-    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/mixed/g, 'pureproduce');
-    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
-};
+study_words_pureproduce = JSON.stringify(study_words_pureproduce).replace(/mixed/g, 'pureproduce');
+study_words_pureproduce = JSON.parse(study_words_pureproduce);
 
 // changing the red to green in the test words to be pureproduce 
-for (let i = 0; i < study_words_pureproduce.length; i++) {
-    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/red/g, 'green');
-    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
-};
+study_words_pureproduce = JSON.stringify(study_words_pureproduce).replace(/red/g, 'green');
+study_words_pureproduce = JSON.parse(study_words_pureproduce);
 
 // changing the category to be all produce (no read) 
-for (let i = 0; i < study_words_pureproduce.length; i++) {
-    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/read/g, 'produce');
-    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
-};
-//console.table(study_words_pureproduce);
+study_words_pureproduce = JSON.stringify(study_words_pureproduce).replace(/read/g, 'produce');
+study_words_pureproduce = JSON.parse(study_words_pureproduce);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////        Make study/test lists for the pure read list            ////////////////////// 
@@ -200,62 +200,66 @@ for (let i = 0; i < study_words_pureproduce.length; i++) {
 //formatting the test words for the pure read condition. all is the same execept for condition and no produce words
 var test_words_pureread = test_words_mixed;
 // changing the condition in the test words to be pureread 
-for (let i = 0; i < test_words_pureread.length; i++) {
-    test_words_pureread[i] = JSON.stringify(test_words_pureread[i]).replace(/mixed/g, 'pureread');
-    test_words_pureread[i] = JSON.parse(test_words_pureread[i]);
-};
+test_words_pureread = JSON.stringify(test_words_pureread).replace(/mixed/g, 'pureread');
+test_words_pureread = JSON.parse(test_words_pureread);
 
 //replacing all instances of 'produce' to read
-for (let i = 0; i < test_words_pureread.length; i++) {
-    test_words_pureread[i] = JSON.stringify(test_words_pureread[i]).replace(/produce/g, 'read');
-    test_words_pureread[i] = JSON.parse(test_words_pureread[i]);
-};
+test_words_pureread = JSON.stringify(test_words_pureread).replace(/produce/g, 'read');
+test_words_pureread = JSON.parse(test_words_pureread);
 
 //formatting the study words /////////////////////
 var study_words_pureread = study_words_mixed;
+
 // changing the condition in the study words to be pureread 
-for (let i = 0; i < study_words_pureread.length; i++) {
-    study_words_pureread[i] = JSON.stringify(study_words_pureread[i]).replace(/mixed/g, 'pureread');
-    study_words_pureread[i] = JSON.parse(study_words_pureread[i]);
-};
+study_words_pureread = JSON.stringify(study_words_pureread).replace(/mixed/g, 'pureread');
+study_words_pureread = JSON.parse(study_words_pureread);
 
 // changing the green to red in the study words to be pureread 
-for (let i = 0; i < study_words_pureread.length; i++) {
-    study_words_pureread[i] = JSON.stringify(study_words_pureread[i]).replace(/green/g, 'red');
-    study_words_pureread[i] = JSON.parse(study_words_pureread[i]);
-};
-// changing the category to be all read (no produce) 
-for (let i = 0; i < study_words_pureproduce.length; i++) {
-    study_words_pureproduce[i] = JSON.stringify(study_words_pureproduce[i]).replace(/produce/g, 'read');
-    study_words_pureproduce[i] = JSON.parse(study_words_pureproduce[i]);
-};
-//console.table(study_words_pureread);
+study_words_pureread = JSON.stringify(study_words_pureread).replace(/green/g, 'red');
+study_words_pureread = JSON.parse(study_words_pureread);
 
+
+// changing the category to be all read (no produce)
+study_words_pureread = JSON.stringify(study_words_pureread).replace(/produce/g, 'read');
+study_words_pureread = JSON.parse(study_words_pureread);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  Randomly Assign one of the three between-subjects conditions: mixed-list, pure-produce, or pure-read  //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/* var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['pure_read', 'pure_produce', 'mixed'], 1)[0];
+var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['pureread', 'pureproduce', 'mixed'], 1)[0];
 jsPsych.data.addProperties({
   condition: condition_assignment
 });
+
+console.log(condition_assignment);
 
 //trial information for each condition -  will call a different list depending on condition
 var list_1 = study_words_pureproduce;
 var list_2 = study_words_pureread;
 var list_3 = study_words_mixed;
 
+var list_1T = test_words_pureproduce;
+var list_2T = test_words_pureread;
+var list_3T = test_words_mixed;
+
 // create a variable to hold the trial information, which changes based on condition
-var stimuli;
-if (condition_assignment == "pure_read") { //if pure_read is sampled from above randomization routine, the stimuli presented will be..
+var stimuli = [];
+var stimuli_test= [];
+if (condition_assignment == "pureproduce") { //if pure_read is sampled from above randomization routine, the stimuli presented will be..
   stimuli = list_1;
-} else if (condition_assignment == "pure_produce") {
+  stimuli_test = list_1T;
+} else if (condition_assignment == "pureread") {
   stimuli = list_2;
+  stimuli_test = list_2T;
 } else if (condition_assignment == "mixed") {
   stimuli = list_3;
+  stimuli_test = list_3T;
 }; 
- */
+
+console.table(stimuli);
+console.table(stimuli_test);
+
 
 /*  function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
     let studyArray, testArray;
