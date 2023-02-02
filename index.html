@@ -107,7 +107,7 @@ for (var i = 0; i < produce_words_test.length; i++) {
   produce_words_test[i].type = text_test_produce_type;  ///            !!! this is adding data as a third object in the data to be called, and then calls the string to be added in this object
   produce_words_test[i].category = text_test_produce_category;
 };
-console.table(produce_words_test);
+//console.table(produce_words_test);
 
 //adding formatting to the read words at test
 for (var i = 0; i < read_words_test.length; i++) {
@@ -115,7 +115,7 @@ for (var i = 0; i < read_words_test.length; i++) {
   read_words_test[i].type = text_test_read_type;
   read_words_test[i].category = text_test_read_category;
 };
-console.table(read_words_test);
+//console.table(read_words_test);
 
 //adding formatting to the new words at test
 for (var i = 0; i < new_words_test.length; i++) {
@@ -235,7 +235,7 @@ jsPsych.data.addProperties({
   condition: condition_assignment
 });
 
-console.log(condition_assignment);
+//console.log(condition_assignment);
 
 //trial information for each condition -  will call a different list depending on condition
 var list_1 = study_words_pureproduce;
@@ -609,23 +609,23 @@ var no_consent = {
 /*set up experiment structure*/
 var timeline = [];
 timeline.push(consent);
-//timeline.push(no_consent);
-//timeline.push(welcome);
-//timeline.push(enter_full_screen);
+timeline.push(no_consent);
+timeline.push(welcome);
+timeline.push(enter_full_screen);
 timeline.push(instructions);
 timeline.push(study_procedure_practice);
 timeline.push(practice_test_instructions);
 timeline.push(study_procedure); // this is new
 timeline.push(test_instructions);
-//timeline.push(test_phase);
-//timeline.push(exit_full_screen);
+timeline.push(test_phase);
+timeline.push(exit_full_screen);
 timeline.push(debrief);
 
 /*start experiment*/
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
-     //window.location.href = "https://umanitobapsych.sona-systems.com/webstudy_credit.aspx?experiment_id=1303&credit_token=a035fd3a62b541dcae118ab791f90307&survey_code="+SONA_ID; //changed
+     window.location.href = "https://umanitobapsych.sona-systems.com/webstudy_credit.aspx?experiment_id=1303&credit_token=a035fd3a62b541dcae118ab791f90307&survey_code="+SONA_ID; //changed
       // display data at end:
       //jsPsych.data.displayData(); //commented out for final version
     }
