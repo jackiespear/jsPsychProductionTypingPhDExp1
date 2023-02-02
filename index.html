@@ -502,8 +502,8 @@ var study_instructions123 = {
         return html;
     },
     html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
-    post_trial_gap: 100, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
-    trial_duration: 100, //change back to 3000
+    post_trial_gap: 500, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
+    trial_duration: 3000, //change back to 3000
     data: {phase:"study", category: jsPsych.timelineVariable("category"), type: jsPsych.timelineVariable("type"), word1: jsPsych.timelineVariable("word1"), word2: jsPsych.timelineVariable("word2")},
     autofocus: 'test-resp-box',
     //timeline_variables: study_instructions,
