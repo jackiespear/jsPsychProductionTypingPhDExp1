@@ -86,10 +86,11 @@ var new_words = result.slice(40, 80); //new lures for test
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //creating text variables to concatenate onto each word for the test phase
-var text_test_all = '{"stimulus":"<p style="font-size: 48px;">"}';
-var text_test_produce = '{"data":{"type":"old","category":"produce","condition":"mixed"}}';
-var text_test_read = '{"data":{"type":"old","category":"read","condition":"mixed"}}';
-var text_test_new = '{"data":{"type":"new","category":"new","condition":"mixed"}}';  
+var text_test_all = '{"<p style="font-size: 48px;">"}';
+var text_test_all2 = '</p>'
+var text_test_produce = '{"type":"old","category":"produce","condition":"mixed"}'; // format the rest like this
+var text_test_read = '{"type":"old","category":"read","condition":"mixed"}';
+var text_test_new = '{"data":{"type":"new","category":"new","condition":"mixed"}';  
 
 //var test123 =  text_test_new.data.type + "word" ;
 //console.log(test123);
@@ -114,19 +115,22 @@ var new_words_test = new_words.map(({word2})=>{ //subsetting new words to be onl
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //adding formatting to the produce words at test
 for (var i = 0; i < produce_words_test.length; i++) {
-  produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2 + text_test_produce;
+  produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2;// + text_test_produce;
+  produce_words_test[i].data = text_test_produce;  ///            !!! this is adding data as a third object in the data to be called, and then calls the string to be added in this object
 };
-//console.table(produce_words_test);
+console.table(produce_words_test);
 
 //adding formatting to the read words at test
 for (var i = 0; i < read_words_test.length; i++) {
   read_words_test[i].word2 = text_test_all + read_words_test[i].word2 + text_test_read;
+  read_words_test[i].data = text_test_read;
 };
-//console.table(read_words_test);
+console.table(read_words_test);
 
 //adding formatting to the new words at test
 for (var i = 0; i < new_words_test.length; i++) {
   new_words_test[i].word2 = text_test_all + new_words_test[i].word2 + text_test_new;
+  new_words_test[i].data = text_test_new;
 };
 //console.table(new_words_test);
 
@@ -137,8 +141,9 @@ var test_words_mixed = produce_words_test.concat(read_words_test, new_words_test
 //creating text variables to concatenate onto each word for the study phase
 var text_produce1 = "<span style='color: green'>";
 var text_read1 = "<span style='color: red'>";
-var text_produce2 = '</span></p>","data":{"type":"old","category":"produce","condition":"mixed"}';
-var text_read2 = '</span></p>","data":{"type":"old","category":"read","condition":"mixed"}';
+var text_produce2 = "</span></p>";
+var text_produce3 = '{"type":"old","category":"produce","condition":"mixed"}';
+var text_read2 = "</span></p>,'data':{'type':'old','category':'read','condition':'mixed'}";
 
 //adding formatting to the produce words
 for (var i = 0; i < produce_words.length; i++) {
@@ -258,6 +263,7 @@ if (condition_assignment == "pureproduce") { //if pure_read is sampled from abov
 }; 
 
 console.table(stimuli);
+console.log(stimuli);
 console.table(stimuli_test);
 
 
@@ -488,7 +494,7 @@ console.table(studyArray)
 //start jspsych experiment here
 
 //Present the PRACTICE study words         //// do I need this? .... I don't think so
-var study_phase = {
+/* var study_phase = {
             type: 'html-keyboard-response',
             stimulus: jsPsych.timelineVariable('stimulus'),
             choices: jsPsych.NO_KEYS,
@@ -498,18 +504,19 @@ var study_phase = {
             data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
             //timeline_variables: studywords,
            // randomize_order: true,
-};
+}; */
 
 // presenting the instructions and the stimulus pair (need to omit instructions 
 // it will just be the second word that is red or green with no instruction that appears now
 
-var study_instructions123 = {
+//Present the instruction to produce or read during PRACTICE phase
+var study_practice = {
     type: 'survey-html-form',
     button_label: 'Press enter to continue',
     preamble: function(){
         var html = `
-          <p>${jsPsych.timelineVariable('stimulus')}</p>
-          <p>${jsPsych.timelineVariable('instructions')}</p>`
+          <p>${jsPsych.timelineVariable('stimulus')}</p>  
+          `
         return html;
     },
     html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
@@ -517,17 +524,17 @@ var study_instructions123 = {
     trial_duration: 3000,
     data: {instruc: jsPsych.timelineVariable("instructions"), phase:"practice", type: jsPsych.timelineVariable('data')},
     autofocus: 'test-resp-box',
-    //timeline_variables: study_instructions,
-    //randomize_order:true,
+
 };
 
 //Putting the study words and study instruction together for the PRACTICE phase
-var study_procedure_practice = {      ////edit this or get rid of it and put timeline variables above
-   timeline: [study_instructions123],
-   timeline_variables: studywords_practice
+ var study_procedure_practice = {
+   timeline: [study_practice],
+   timeline_variables: studywords_practice,
+   randomize_order: true,
  };
- /////////
- //test phase instructions presented after study PRACTICE phase is over
+
+//test phase instructions presented after study PRACTICE phase is over
 var practice_test_instructions = {
   type: "html-keyboard-response",
   stimulus: post_practice_text,
@@ -537,10 +544,60 @@ var practice_test_instructions = {
 };
 
 
+//Study Phase
+var study_instructions123 = {
+    type: 'survey-html-form',
+    button_label: 'Press enter to continue',
+    preamble: function(){
+        var html = `
+          <p>${jsPsych.timelineVariable('word1')} - ${jsPsych.timelineVariable('word2')} </p>
+          `
+        return html;
+    },
+    html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
+    post_trial_gap: 500, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
+    trial_duration: 3000,
+    data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
+    autofocus: 'test-resp-box',
+    //timeline_variables: study_instructions,
+    //randomize_order:true,
+};
+
+//Putting the study words and study instruction together
+ var study_procedure = {
+   timeline: [study_instructions123],
+   timeline_variables: stimuli
+ };
 
 
 
 
+
+
+/*set up experiment structure*/
+var timeline = [];
+//timeline.push(consent);
+//timeline.push(no_consent);
+//timeline.push(welcome);
+//timeline.push(enter_full_screen);
+//timeline.push(instructions);
+//timeline.push(study_procedure_practice);
+timeline.push(practice_test_instructions);
+timeline.push(study_procedure); // this is new
+//timeline.push(test_instructions);
+//timeline.push(test_phase);
+//timeline.push(exit_full_screen);
+//timeline.push(debrief);
+
+/*start experiment*/
+jsPsych.init({
+    timeline: timeline,
+    on_finish: function() {
+     //window.location.href = "https://umanitobapsych.sona-systems.com/webstudy_credit.aspx?experiment_id=1303&credit_token=a035fd3a62b541dcae118ab791f90307&survey_code="+SONA_ID; //changed
+      // display data at end:
+      jsPsych.data.displayData(); //commented out for final version
+    }
+});
 
 
   </script>
