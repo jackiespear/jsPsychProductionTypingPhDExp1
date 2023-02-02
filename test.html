@@ -86,11 +86,14 @@ var new_words = result.slice(40, 80); //new lures for test
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //creating text variables to concatenate onto each word for the test phase
-var text_test_all = '{"<p style="font-size: 48px;">"}';
+var text_test_all = '<p style="font-size: 48px;">';
 var text_test_all2 = '</p>'
-var text_test_produce = '{"type":"old","category":"produce","condition":"mixed"}'; // format the rest like this
-var text_test_read = '{"type":"old","category":"read","condition":"mixed"}';
-var text_test_new = '{"data":{"type":"new","category":"new","condition":"mixed"}';  
+var text_test_produce_type = 'old'; // format the rest like this
+var text_test_produce_category = 'produce'
+var text_test_read_type = 'old';
+var text_test_read_category = 'read'
+var text_test_new_type = 'new';  
+var text_test_new_category = 'new' 
 
 //var test123 =  text_test_new.data.type + "word" ;
 //console.log(test123);
@@ -115,22 +118,25 @@ var new_words_test = new_words.map(({word2})=>{ //subsetting new words to be onl
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //adding formatting to the produce words at test
 for (var i = 0; i < produce_words_test.length; i++) {
-  produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2;// + text_test_produce;
-  produce_words_test[i].data = text_test_produce;  ///            !!! this is adding data as a third object in the data to be called, and then calls the string to be added in this object
+  produce_words_test[i].word2 = text_test_all + produce_words_test[i].word2 + text_test_all2;// + text_test_produce;
+  produce_words_test[i].type = text_test_produce_type;  ///            !!! this is adding data as a third object in the data to be called, and then calls the string to be added in this object
+  produce_words_test[i].category = text_test_produce_category;
 };
 console.table(produce_words_test);
 
 //adding formatting to the read words at test
 for (var i = 0; i < read_words_test.length; i++) {
-  read_words_test[i].word2 = text_test_all + read_words_test[i].word2 + text_test_read;
-  read_words_test[i].data = text_test_read;
+  read_words_test[i].word2 = text_test_all + read_words_test[i].word2 + text_test_all2;
+  read_words_test[i].type = text_test_read_type;
+  read_words_test[i].category = text_test_read_category;
 };
 console.table(read_words_test);
 
 //adding formatting to the new words at test
 for (var i = 0; i < new_words_test.length; i++) {
-  new_words_test[i].word2 = text_test_all + new_words_test[i].word2 + text_test_new;
-  new_words_test[i].data = text_test_new;
+  new_words_test[i].word2 = text_test_all + new_words_test[i].word2 + text_test_all2;
+  new_words_test[i].type = text_test_new_type;
+  new_words_test[i].category = text_test_new_category;
 };
 //console.table(new_words_test);
 
@@ -139,21 +145,28 @@ var test_words_mixed = produce_words_test.concat(read_words_test, new_words_test
 //console.table(test_words_mixed);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //creating text variables to concatenate onto each word for the study phase
-var text_produce1 = "<span style='color: green'>";
-var text_read1 = "<span style='color: red'>";
-var text_produce2 = "</span></p>";
-var text_produce3 = '{"type":"old","category":"produce","condition":"mixed"}';
-var text_read2 = "</span></p>,'data':{'type':'old','category':'read','condition':'mixed'}";
+var text_produce1 = '<span style="color: green">';
+var text_read1 = '<span style="color: red">';
+var text_produce2 = '</span></p>';
+var text_produce_type = 'old';
+var text_produce_category = 'produce';
+var text_read2 = '</span></p>';
+var text_read_type = 'old';
+var text_read_category = 'read'
 
 //adding formatting to the produce words
 for (var i = 0; i < produce_words.length; i++) {
   produce_words[i].word2 = text_produce1 + produce_words[i].word2 + text_produce2;
+  produce_words[i].type = text_produce_type;
+  produce_words[i].category = text_produce_category;
 };
 //console.table(produce_words);
 
 //adding text to the read words
 for (var i = 0; i < read_words.length; i++) {
   read_words[i].word2 = text_read1 + read_words[i].word2 + text_read2;
+  read_words[i].type = text_read_type;
+  read_words[i].category = text_read_category;
 };
 //console.table(read_words);
 
@@ -267,125 +280,6 @@ console.log(stimuli);
 console.table(stimuli_test);
 
 
-/*  function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
-    let studyArray, testArray;
-    switch(condition) {
-        case 'mixed':
-            studyArray = study_words_mixed;
-            testArray = test_words_mixed;
-            break;
-        case 'pureproduce':
-            studyArray = study_words_pureproduce;
-            testArray = test_words_pureproduce;
-            break;
-        case 'pureread':
-            studyArray = study_words_pureread;
-            testArray = test_words_pureread;
-            break;
-        default:
-            throw new Error('Invalid condition')
-    }
-    // shuffle elements using Fisher-Yates algorithm
-    for (var i = studyArray.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = studyArray[i];
-        studyArray[i] = studyArray[j];
-        studyArray[j] = temp;
-    }
-    for (var i = testArray.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = testArray[i];
-        testArray[i] = testArray[j];
-        testArray[j] = temp;
-    }
-    return [studyArray, testArray];
-} */
-
-
-/* function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
-    let studyArray, testArray;
-    switch(condition) {
-        case 'mixed':
-            studyArray = study_words_mixed.slice();
-            testArray = test_words_mixed.slice();
-            break;
-        case 'pureproduce':
-            studyArray = study_words_pureproduce.slice();
-            testArray = test_words_pureproduce.slice();
-            break;
-        case 'pureread':
-            studyArray = study_words_pureread.slice();
-            testArray = test_words_pureread.slice();
-            break;
-        default:
-            throw new Error('Invalid condition')
-    }
-    // shuffle elements using Fisher-Yates algorithm
-    for (var i = studyArray.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = studyArray[i];
-        studyArray[i] = studyArray[j];
-        studyArray[j] = temp;
-    }
-    for (var i = testArray.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = testArray[i];
-        testArray[i] = testArray[j];
-        testArray[j] = temp;
-    }
-    return [studyArray, testArray];
-}
-
-
-
-let conditions = ['mixed', 'pureproduce', 'pureread'];
-let randomIndex = Math.floor(Math.random() * conditions.length);
-let randomCondition = conditions[randomIndex]; */
-
-/* function shuffleArray(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
-  }
-
-  function shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, condition) {
-  let studyArray, testArray;
-  if (condition === 'mixed') {
-    // Shuffle the arrays
-    studyArray = shuffleArray(study_words_mixed);
-    testArray = shuffleArray(test_words_mixed);
-  } else if (condition === 'pureproduce') {
-    // Shuffle the arrays
-    studyArray = shuffleArray(study_words_pureproduce);
-    testArray = shuffleArray(test_words_pureproduce);
-  } else if (condition === 'pureread') {
-    // Shuffle the arrays
-    studyArray = shuffleArray(study_words_pureread);
-    testArray = shuffleArray(test_words_pureread);
-  }
-  return [studyArray, testArray];
-}
-
-
-
-let selectedCondition = 'pureproduce'
-let studyAndTestArrays = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, selectedCondition);
-console.log(studyArray); */
-
-
-
 // Randomly select a condition
 let conditions = ['mixed', 'pureproduce', 'pureread']
 let selectedCondition = conditions[Math.floor(Math.random()*conditions.length)];
@@ -452,23 +346,6 @@ console.log(study);
 console.log(test);
 
 
-
-
-
-
-
-
-
-
-// Now you can use the studyArray and testArray for the chosen condition
-
-
-//let [studyArray, testArray] = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, randomCondition);
-
-
-
-
-//let [studyArray, testArray] = shuffleArraysByCondition(study_words_mixed, test_words_mixed, study_words_pureproduce, test_words_pureproduce, study_words_pureread, test_words_pureread, 'pureproduce');
 console.table(testArray);
 console.table(studyArray)
 ////////////////////////    need to make sure the right test words are being radomized at the same time!!!! ////////////////////////////////////////////
@@ -550,14 +427,14 @@ var study_instructions123 = {
     button_label: 'Press enter to continue',
     preamble: function(){
         var html = `
-          <p>${jsPsych.timelineVariable('word1')} - ${jsPsych.timelineVariable('word2')} </p>
+          <p style='font-size: 48px;'>${jsPsych.timelineVariable('word1')} - ${jsPsych.timelineVariable('word2')} </p>
           `
         return html;
     },
     html:  '<p> <input type="text" onkeydown="return (event.keycode!=13);" id="test-resp-box" name="response" size="10" style=color:white;/></p>', //color being white will not mirror typed word to the screen
-    post_trial_gap: 500, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
-    trial_duration: 3000,
-    data: {instruc: jsPsych.timelineVariable("instructions"), phase:"study", type: jsPsych.timelineVariable('data')},
+    post_trial_gap: 100, // changing this to 3 seconds so that each trail is equal (e.g. produce vs. read),
+    trial_duration: 100, //change back to 3000
+    data: {phase:"study", category: jsPsych.timelineVariable("category"), type: jsPsych.timelineVariable("type"), word1: jsPsych.timelineVariable("word1"), word2: jsPsych.timelineVariable("word2")},
     autofocus: 'test-resp-box',
     //timeline_variables: study_instructions,
     //randomize_order:true,
@@ -566,9 +443,45 @@ var study_instructions123 = {
 //Putting the study words and study instruction together
  var study_procedure = {
    timeline: [study_instructions123],
-   timeline_variables: stimuli
+   timeline_variables: stimuli,
+   randomize_order: true,
  };
 
+ //test phase instructions presented after study phase is over
+var test_instructions = {
+  type: "html-keyboard-response",
+  stimulus: test_instruction_text,
+  choices: ['i'],
+  data: {"phase": "Test_Instructions",
+  },
+};
+
+//Present the test words
+var test_phase = {
+    timeline: [
+        {
+            type: 'html-keyboard-response',
+            stimulus: jsPsych.timelineVariable('word2'),
+            choices: ['y', 'n'],
+            data: {type: jsPsych.timelineVariable("type"), category: jsPsych.timelineVariable("category"), phase: "test"},
+            response_ends_trial:true,
+            timeline_variables: stimuli_test,
+            post_trial_gap: 500, // like a blank 500
+             on_finish: function(data) {
+              if (data.response == "y" && data.type == "old") {
+                data.correct = 1;
+              } else if (data.response == "n" && data.type == "new") {
+                data.correct = 1;
+              }
+              else {
+                data.correct = 0;
+              }
+            } 
+        }
+    ],
+    randomize_order: true,
+    timeline_variables: stimuli_test,
+};
 
 
 
@@ -584,8 +497,8 @@ var timeline = [];
 //timeline.push(study_procedure_practice);
 timeline.push(practice_test_instructions);
 timeline.push(study_procedure); // this is new
-//timeline.push(test_instructions);
-//timeline.push(test_phase);
+timeline.push(test_instructions);
+timeline.push(test_phase);
 //timeline.push(exit_full_screen);
 //timeline.push(debrief);
 
