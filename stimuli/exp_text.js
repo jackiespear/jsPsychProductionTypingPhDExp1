@@ -1,4 +1,4 @@
-var welcome_text = "<p>Welcome to the experiment. This experiment should take no longer than 10 minutes.</p> <p>Press any key to begin.</p>";
+var welcome_text = "<p>Welcome to the experiment. This experiment should take no longer than 20 minutes.</p> <p>Press any key to begin.</p>";
 
 var instruction_text = "<p>Please read these instructions carefully.</p>"+"<p>This study is being conducted by Jackie Spear in the Department of Psychology. You will be asked to study a list of words, and then tested on your memory performance on these same words. At test, some of the words will be previously studied words, and some will be new. Your job will be to indicate that either yes, you did previously study a word, or no, you did not. The study is computer mediated and it takes approximately 20 minutes to complete. Also, when prompted to provide a word, respond by typing in the word 'puppy'. You will receive one credit in exchange for your participation. The researcher may be contacted by email at umspear@myumanitoba.ca.</p>"+"<p>Press any key to begin.</p>";
 
